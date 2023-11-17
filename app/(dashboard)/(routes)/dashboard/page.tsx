@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { useChat } from "ai/react";
+import React, { useRef } from "react";
+import { useChat } from "ai/react"; // Assuming you have a `Message` type from your chat library
 import va from "@vercel/analytics";
 import clsx from "clsx";
 import { Logo, Avatar, LoadingCircle, SendIcon } from "./icons";
@@ -11,8 +11,13 @@ import remarkGfm from "remark-gfm";
 import Textarea from "react-textarea-autosize";
 import { toast } from "sonner";
 import seedrandom from "seedrandom";
+// Define the type for business prompts
+interface BusinessPrompt {
+  question: string;
+  category: string;
+}
 
-const business_prompts = [
+const business_prompts: BusinessPrompt[] = [
   {
     question: "How can I effectively launch my small business?",
     category: "Startup Launch",
@@ -238,13 +243,22 @@ const business_prompts = [
   },
 ];
 
-const getRandomPrompts = (count, seed) => {
+// Define the type for the getRandomPrompts function
+interface RandomPrompt {
+  label: string;
+  question: string;
+}
+
+const getRandomPrompts = (count: number, seed: string): RandomPrompt[] => {
   const rng = seedrandom(seed);
-  const randomPrompts = [];
+  const randomPrompts: RandomPrompt[] = [];
 
   const generateRandomPrompt = () => {
-    const randomPrompt =
-      business_prompts[Math.floor(rng() * business_prompts.length)];
+    const randomIndex = Math.floor(rng() * business_prompts.length);
+    const randomPrompt: RandomPrompt = {
+      label: business_prompts[randomIndex].category,
+      question: business_prompts[randomIndex].question,
+    };
     randomPrompts.push(randomPrompt);
   };
 
@@ -252,15 +266,13 @@ const getRandomPrompts = (count, seed) => {
     generateRandomPrompt();
   }
 
-  return randomPrompts.map((prompt) => ({
-    label: prompt.category,
-    question: prompt.question,
-  }));
+  return randomPrompts;
 };
+
 
 // Set a fixed seed for consistency between server and client
 const seed = "AI_Business";
-const examples = getRandomPrompts(6, seed);
+const examples: RandomPrompt[] = getRandomPrompts(6, seed);
 
 export default function Dashboard() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -286,7 +298,7 @@ export default function Dashboard() {
 
   const disabled = isLoading || input.length === 0;
 
-  const handleExampleClick = async (example) => {
+  const handleExampleClick = async (example: RandomPrompt) => {
     // Set the input to the example question
     setInput(example.question);
 
@@ -428,5 +440,7 @@ export default function Dashboard() {
         </p>
       </div>
     </main>
+    
   );
+  
 }
