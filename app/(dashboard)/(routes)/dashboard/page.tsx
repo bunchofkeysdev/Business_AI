@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { useChat } from "ai/react";
 import va from "@vercel/analytics";
 import clsx from "clsx";
@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Textarea from "react-textarea-autosize";
 import { toast } from "sonner";
-import seedrandom from 'seedrandom';
+import seedrandom from "seedrandom";
 
 const business_prompts = [
   {
@@ -259,7 +259,7 @@ const getRandomPrompts = (count, seed) => {
 };
 
 // Set a fixed seed for consistency between server and client
-const seed = 'AI_Business';
+const seed = "AI_Business";
 const examples = getRandomPrompts(6, seed);
 
 export default function Dashboard() {
@@ -428,7 +428,5 @@ export default function Dashboard() {
         </p>
       </div>
     </main>
-    
   );
-  
 }
