@@ -10,7 +10,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Textarea from "react-textarea-autosize";
 import { toast } from "sonner";
-declare module "seedrandom";
+import seedrandom from "seedrandom";
+
 const business_prompts = [
   {
     question: "How can I effectively launch my small business?",
