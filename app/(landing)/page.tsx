@@ -1,19 +1,20 @@
 "use client";
 import "../../app/globals.css";
 
-
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import Script from "next/script";
 import Image from "next/image";
 import { Logo } from "./icons";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-export default function LandingPage() {
+interface LandingPageProps {
+  // Add any props if needed
+}
+const LandingPage: React.FC<LandingPageProps> = () => {
   useEffect(() => {
     const menuButton = document.querySelector(".header-menu-toggle");
-    const menu = document.querySelector(".nk-header-menu");
-    const menuItems = document.querySelectorAll(".nk-menu-link"); // Adjust the selector based on your HTML structure
+    const menu = document.querySelector<HTMLElement>(".nk-header-menu");
 
     if (menuButton && menu) {
       menuButton.addEventListener("click", function () {
@@ -21,28 +22,31 @@ export default function LandingPage() {
       });
     }
 
+    const menuItems = document.querySelectorAll<HTMLElement>(".nk-menu-link");
+
     if (menuItems) {
       menuItems.forEach((item) => {
         item.addEventListener("click", function () {
-          if (menu.classList.contains("header-menu-active")) {
+          if (menu && menu.classList.contains("header-menu-active")) {
             menu.classList.remove("header-menu-active");
           }
         });
       });
     }
-
     // Cleanup event listeners when component unmounts
     return () => {
       if (menuButton) {
         menuButton.removeEventListener("click", function () {
-          menu.classList.toggle("header-menu-active");
+          if (menu) {
+            menu.classList.toggle("header-menu-active");
+          }
         });
       }
 
       if (menuItems) {
         menuItems.forEach((item) => {
           item.removeEventListener("click", function () {
-            if (menu.classList.contains("header-menu-active")) {
+            if (menu && menu.classList.contains("header-menu-active")) {
               menu.classList.remove("header-menu-active");
             }
           });
@@ -51,18 +55,15 @@ export default function LandingPage() {
     };
   }, []); // Empty dependency array ensures the effect runs once when component mounts
 
-
-  
   const { isSignedIn } = useAuth();
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const handleAccordionClick = (index) => {
+  const handleAccordionClick = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
     <div className="nk-body" data-menu-collapse="lg">
-      
       <div className="nk-app-root bg-darker">
         <header className="nk-header bg-darker is-dark has-mask">
           <div className="nk-mask bg-pattern-dot-white-sm bg-blend-bottom"></div>
@@ -72,7 +73,7 @@ export default function LandingPage() {
                 <div className="nk-header-logo">
                   <Link href="/" className="logo-link">
                     <div className="logo-wrap">
-                    <Logo />
+                      <Logo />
                     </div>
                   </Link>
                 </div>
@@ -87,7 +88,6 @@ export default function LandingPage() {
                 </div>
                 <nav className="nk-header-menu nk-menu">
                   <ul className="nk-menu-list me-auto">
-                    
                     <li className="nk-menu-item">
                       <Link href="/#howto" className="nk-menu-link">
                         <span className="nk-menu-text">How To</span>
@@ -108,7 +108,6 @@ export default function LandingPage() {
                         <span className="nk-menu-text">FAQ</span>
                       </Link>
                     </li>
-                    
                   </ul>
                   <div className="d-none d-lg-block mx-2">
                     <button className="dark-mode-toggle">
@@ -145,7 +144,7 @@ export default function LandingPage() {
                 <div className="col-lg-11 col-xl-10 col-xxl-9">
                   <div className="nk-hero-content py-lg-6 py-5">
                     <h1 className="title mb-lg-4 display-6 mb-3">
-                    Unleash Your Business
+                      Unleash Your Business
                       <div className="text-gradient-primary">
                         <span
                           className="type-init"
@@ -154,7 +153,8 @@ export default function LandingPage() {
                       </div>
                     </h1>
                     <p className="lead px-md-8 px-lg-6 px-xxl-12 mb-lg-5 mb-4">
-                    Let our AI-powered Business App simplify complexities, empowering you with smart solutions for your business
+                      Let our AI-powered Business App simplify complexities,
+                      empowering you with smart solutions for your business
                     </p>
                     <ul className="btn-list btn-list-inline">
                       <li>
@@ -287,7 +287,7 @@ export default function LandingPage() {
                   <div className="col-lg-9 col-xl-6 col-xxl-5">
                     <h2 className="title">AI for Business Success. </h2>
                     <p className="lead">
-                    Elevate your business with effortless AI solutions.
+                      Elevate your business with effortless AI solutions.
                     </p>
                   </div>
                 </div>
@@ -306,7 +306,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Data Mastery</h4>
                             <p>
-                             Harness data insights to guide strategic decisions, transforming raw information into actionable business intelligence effortlessly.
+                              Harness data insights to guide strategic
+                              decisions, transforming raw information into
+                              actionable business intelligence effortlessly.
                             </p>
                           </div>
                         </div>
@@ -325,7 +327,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Automation Edge</h4>
                             <p>
-                             Elevate productivity with seamless workflow automation, allowing users to focus on growth while AI handles routine tasks efficiently.
+                              Elevate productivity with seamless workflow
+                              automation, allowing users to focus on growth
+                              while AI handles routine tasks efficiently.
                             </p>
                           </div>
                         </div>
@@ -344,7 +348,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Customer Focus</h4>
                             <p>
-                              Personalize customer interactions, fostering loyalty and satisfaction by tailoring experiences to individual needs and preferences.
+                              Personalize customer interactions, fostering
+                              loyalty and satisfaction by tailoring experiences
+                              to individual needs and preferences.
                             </p>
                           </div>
                         </div>
@@ -363,7 +369,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Predictive Power</h4>
                             <p>
-                              Anticipate market trends with predictive analytics, enabling users to make informed decisions ahead of the competition.
+                              Anticipate market trends with predictive
+                              analytics, enabling users to make informed
+                              decisions ahead of the competition.
                             </p>
                           </div>
                         </div>
@@ -385,7 +393,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Cost-Efficiency</h4>
                             <p>
-                              Maximize resource utilization and identify cost-saving opportunities, ensuring optimal efficiency for sustainable business operations.
+                              Maximize resource utilization and identify
+                              cost-saving opportunities, ensuring optimal
+                              efficiency for sustainable business operations.
                             </p>
                           </div>
                         </div>
@@ -404,7 +414,9 @@ export default function LandingPage() {
                           <div className="feature-text">
                             <h4 className="title">Security Assurance</h4>
                             <p>
-                              Protect business assets with advanced security measures, providing users with a safe and trustworthy environment for their operations.
+                              Protect business assets with advanced security
+                              measures, providing users with a safe and
+                              trustworthy environment for their operations.
                             </p>
                           </div>
                         </div>
@@ -419,170 +431,192 @@ export default function LandingPage() {
             className="section section-bottom-0 rounded-top-6 bg-white"
             id="howto"
           >
-         <div className="container">
-  <div className="section-head">
-    <div className="row justify-content-center text-center">
-      <div className="col-lg-9 col-xl-8 col-xxl-5">
-        <div className="badge text-bg-primary-soft-outline text-uppercase text-tracking-1 rounded-pill mb-3 px-3 py-2">
-          How To
-        </div>
-        <h2 className="title">Maximize Your Business with AI</h2>
-        <p className="lead">
-          Let our AI assist you in optimizing business processes, making informed decisions, and achieving success.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div className="section-content">
-    <div className="row gy-3 justify-content-center">
-      <div className="col-xxl-12">
-        <div className="bg-primary p-lg-6 rounded-4 bg-opacity-10 p-5">
-          <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
-            <div className="col-lg-6 col-xl-5">
-              <div className="rounded-4 bg-gradient-primary bg-opacity-50 p-5 pb-0">
-                <div className="block-gfx">
-                  <Image
-                    className="w-100 rounded-top-3 shadow-sm"
-                    src="/static/images/gfx/process/a.jpg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
+            <div className="container">
+              <div className="section-head">
+                <div className="row justify-content-center text-center">
+                  <div className="col-lg-9 col-xl-8 col-xxl-5">
+                    <div className="badge text-bg-primary-soft-outline text-uppercase text-tracking-1 rounded-pill mb-3 px-3 py-2">
+                      How To
+                    </div>
+                    <h2 className="title">Maximize Your Business with AI</h2>
+                    <p className="lead">
+                      Let our AI assist you in optimizing business processes,
+                      making informed decisions, and achieving success.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="section-content">
+                <div className="row gy-3 justify-content-center">
+                  <div className="col-xxl-12">
+                    <div className="bg-primary p-lg-6 rounded-4 bg-opacity-10 p-5">
+                      <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
+                        <div className="col-lg-6 col-xl-5">
+                          <div className="rounded-4 bg-gradient-primary bg-opacity-50 p-5 pb-0">
+                            <div className="block-gfx">
+                              <Image
+                                className="w-100 rounded-top-3 shadow-sm"
+                                src="/static/images/gfx/process/a.jpg"
+                                alt=""
+                                width={100}
+                                height={100}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 col-xxl-5">
+                          <div className="block-text pe-xl-5">
+                            <Image
+                              className="h-3rem mb-3"
+                              src="/static/images/icon/text.svg"
+                              alt=""
+                              width={100}
+                              height={100}
+                            />
+                            <h3 className="title">Data-Driven Insights</h3>
+                            <p>
+                              Leverage AI to analyze and interpret business
+                              data, gaining valuable insights for strategic
+                              decisions.
+                            </p>
+                            <ul className="list gy-3">
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Access comprehensive data analytics tools.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Make data-driven decisions with confidence.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Visualize trends and patterns effortlessly.
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xxl-12">
+                    <div className="bg-warning p-lg-6 rounded-4 bg-opacity-10 p-5">
+                      <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
+                        <div className="col-lg-6 col-xl-5">
+                          <div className="rounded-4 bg-gradient-warning bg-opacity-50 p-5 pb-0">
+                            <div className="block-gfx">
+                              <Image
+                                className="w-100 rounded-top-3 shadow-sm"
+                                src="/static/images/gfx/process/b.jpg"
+                                alt=""
+                                width={100}
+                                height={100}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 col-xxl-5">
+                          <div className="block-text pe-xl-5">
+                            <Image
+                              className="h-3rem mb-3"
+                              src="/static/images/icon/edit.svg"
+                              alt=""
+                              width={100}
+                              height={100}
+                            />
+                            <h3 className="title">Efficient Task Management</h3>
+                            <p>
+                              Enhance productivity by using AI to manage tasks,
+                              streamline workflows, and prioritize activities.
+                            </p>
+                            <ul className="list gy-3">
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Organize tasks and projects effortlessly.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Automate repetitive processes for efficiency.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Set priorities and deadlines with ease.
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xxl-12">
+                    <div className="bg-info p-lg-6 rounded-4 bg-opacity-10 p-5">
+                      <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
+                        <div className="col-lg-6 col-xl-5">
+                          <div className="rounded-4 bg-gradient-info bg-opacity-50 p-5 pb-0">
+                            <div className="block-gfx">
+                              <Image
+                                className="w-100 rounded-top-3 shadow-sm"
+                                src="/static/images/gfx/process/c.jpg"
+                                alt=""
+                                width={100}
+                                height={100}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-6 col-xxl-5">
+                          <div className="block-text pe-xl-5">
+                            <Image
+                              className="h-3rem mb-3"
+                              src="/static/images/icon/paper.svg"
+                              alt=""
+                              width={100}
+                              height={100}
+                            />
+                            <h3 className="title">Strategic Planning</h3>
+                            <p>
+                              Collaborate with AI for strategic planning, market
+                              analysis, and business growth strategies.
+                            </p>
+                            <ul className="list gy-3">
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Plan for business growth and expansion.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Receive personalized recommendations.
+                                </span>
+                              </li>
+                              <li>
+                                <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
+                                <span>
+                                  Optimize your business strategies effectively.
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 col-xxl-5">
-              <div className="block-text pe-xl-5">
-                <Image
-                  className="h-3rem mb-3"
-                  src="/static/images/icon/text.svg"
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-                <h3 className="title">Data-Driven Insights</h3>
-                <p>
-                  Leverage AI to analyze and interpret business data, gaining valuable insights for strategic decisions.
-                </p>
-                <ul className="list gy-3">
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Access comprehensive data analytics tools.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Make data-driven decisions with confidence.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Visualize trends and patterns effortlessly.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-xxl-12">
-        <div className="bg-warning p-lg-6 rounded-4 bg-opacity-10 p-5">
-          <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
-            <div className="col-lg-6 col-xl-5">
-              <div className="rounded-4 bg-gradient-warning bg-opacity-50 p-5 pb-0">
-                <div className="block-gfx">
-                  <Image
-                    className="w-100 rounded-top-3 shadow-sm"
-                    src="/static/images/gfx/process/b.jpg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6 col-xxl-5">
-              <div className="block-text pe-xl-5">
-                <Image
-                  className="h-3rem mb-3"
-                  src="/static/images/icon/edit.svg"
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-                <h3 className="title">Efficient Task Management</h3>
-                <p>
-                  Enhance productivity by using AI to manage tasks, streamline workflows, and prioritize activities.
-                </p>
-                <ul className="list gy-3">
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Organize tasks and projects effortlessly.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Automate repetitive processes for efficiency.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Set priorities and deadlines with ease.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-xxl-12">
-        <div className="bg-info p-lg-6 rounded-4 bg-opacity-10 p-5">
-          <div className="row g-gs flex-lg-row-reverse justify-content-between align-items-center">
-            <div className="col-lg-6 col-xl-5">
-              <div className="rounded-4 bg-gradient-info bg-opacity-50 p-5 pb-0">
-                <div className="block-gfx">
-                  <Image
-                    className="w-100 rounded-top-3 shadow-sm"
-                    src="/static/images/gfx/process/c.jpg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6 col-xxl-5">
-              <div className="block-text pe-xl-5">
-                <Image
-                  className="h-3rem mb-3"
-                  src="/static/images/icon/paper.svg"
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-                <h3 className="title">Strategic Planning</h3>
-                <p>
-                  Collaborate with AI for strategic planning, market analysis, and business growth strategies.
-                </p>
-                <ul className="list gy-3">
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Plan for business growth and expansion.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Receive personalized recommendations.</span>
-                  </li>
-                  <li>
-                    <em className="icon text-info fs-5 ni ni-check-circle-fill"></em>
-                    <span>Optimize your business strategies effectively.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
           </section>
           <section className="section has-mask bg-white" id="usecase">
             <div className="nk-mask bg-pattern-dot-sm bg-blend-around"></div>
@@ -601,154 +635,163 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-           <div className="section-content">
-  <div className="row justify-content-center">
-    <div className="col-xxl-11">
-      <div className="row gy-6 gx-5 text-center">
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-danger-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/articles.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
+              <div className="section-content">
+                <div className="row justify-content-center">
+                  <div className="col-xxl-11">
+                    <div className="row gy-6 gx-5 text-center">
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-danger-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/articles.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Data Analysis</h3>
+                              <p>
+                                Leverage AI for in-depth data analysis and gain
+                                valuable insights to drive informed business
+                                decisions.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-success-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/product-discription.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Task Management</h3>
+                              <p>
+                                Optimize your workflow with AI-driven task
+                                management, ensuring efficient allocation and
+                                completion of tasks.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-purple-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/hand-mic.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Strategic Planning</h3>
+                              <p>
+                                Collaborate with AI for strategic planning,
+                                market analysis, and business growth strategies.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-info-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/praying-hand.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Customer Engagement</h3>
+                              <p>
+                                Enhance customer interactions with AI-powered
+                                engagement strategies, personalized
+                                recommendations, and targeted campaigns.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-primary-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/stock-up.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Process Automation</h3>
+                              <p>
+                                Streamline business processes with AI
+                                automation, reducing manual efforts and
+                                increasing operational efficiency.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6 col-lg-4">
+                        <div className="h-100 px-xl-4 px-xxl-5">
+                          <div className="feature">
+                            <div className="feature-media">
+                              <div className="media media-middle media-xl media-border text-bg-indigo-soft-outline rounded-3">
+                                <Image
+                                  className="h-2rem"
+                                  src="/static/images/icon/website.svg"
+                                  alt=""
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+                            <div className="feature-text">
+                              <h3 className="title">Financial Insights</h3>
+                              <p>
+                                Utilize AI for financial forecasting, expense
+                                tracking, and real-time insights for sound
+                                financial decision-making.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="feature-text">
-                <h3 className="title">Data Analysis</h3>
-                <p>
-                  Leverage AI for in-depth data analysis and gain valuable insights to drive informed business decisions.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-success-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/product-discription.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-              <div className="feature-text">
-                <h3 className="title">Task Management</h3>
-                <p>
-                  Optimize your workflow with AI-driven task management, ensuring efficient allocation and completion of tasks.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-purple-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/hand-mic.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-              <div className="feature-text">
-                <h3 className="title">Strategic Planning</h3>
-                <p>
-                  Collaborate with AI for strategic planning, market analysis, and business growth strategies.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-info-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/praying-hand.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-              <div className="feature-text">
-                <h3 className="title">Customer Engagement</h3>
-                <p>
-                  Enhance customer interactions with AI-powered engagement strategies, personalized recommendations, and targeted campaigns.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-primary-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/stock-up.svg"
-
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-              <div className="feature-text">
-                <h3 className="title">Process Automation</h3>
-                <p>
-                  Streamline business processes with AI automation, reducing manual efforts and increasing operational efficiency.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6 col-lg-4">
-          <div className="h-100 px-xl-4 px-xxl-5">
-            <div className="feature">
-              <div className="feature-media">
-                <div className="media media-middle media-xl media-border text-bg-indigo-soft-outline rounded-3">
-                  <Image
-                    className="h-2rem"
-                    src="/static/images/icon/website.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              </div>
-              <div className="feature-text">
-                <h3 className="title">Financial Insights</h3>
-                <p>
-                  Utilize AI for financial forecasting, expense tracking, and real-time insights for sound financial decision-making.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
             </div>
           </section>
           <section className="section section-bottom-0 bg-light" id="pricing">
@@ -818,8 +861,7 @@ export default function LandingPage() {
                             </div>
                           </div>
                           <p className="fw-bold text-primary">
-                            For marketers, bloggers, freelancers &amp;
-                            startups
+                            For marketers, bloggers, freelancers &amp; startups
                           </p>
                           <div className="bg-light smaller rounded-1 mb-4 px-4 py-2">
                             Try out all features to determine what works best
@@ -1026,112 +1068,118 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-             <div className="section-content">
-  <div className="row g-gs justify-content-center">
-    <div className="col-xl-9 col-xxl-8">
-      <div
-        className="accordion accordion-separated accordion-plus-minus"
-        id="faq-business-ai"
-      >
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-             className={`accordion-button ${activeIndex === 0 ? 'show !important' : ''}`}
-             onClick={() => handleAccordionClick(0)}
-              data-bs-toggle="collapse"
-              data-bs-target="#faq-business-ai-1"
-            >
-              How can BusinessAI assist my business?
-            </button>
-          </h2>
-          <div
-            id="faq-business-ai-1"
-           
-            className={`accordion-collapse ${activeIndex === 0 ? 'show !important' : 'collapse'}`}
-            data-bs-parent="#faq-business-ai"
-          >
-            <div className="accordion-body">
-              BusinessAI can help optimize your business processes,
-              analyze data, and provide insights for better decision-making.
-              Whether it's automating tasks or predicting trends, BusinessAI
-              enhances efficiency and performance.
-            </div>
-          </div>
-        </div>
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-              className="accordion-button collapsed"
-              data-bs-toggle="collapse"
-              data-bs-target="#faq-business-ai-2"
-            >
-              Can BusinessAI improve customer engagement?
-            </button>
-          </h2>
-          <div
-            id="faq-business-ai-2"
-            className="accordion-collapse collapse"
-            data-bs-parent="#faq-business-ai"
-          >
-            <div className="accordion-body">
-              Yes, BusinessAI can enhance customer engagement by
-              personalizing interactions, analyzing customer behavior, and
-              providing tailored recommendations. It helps create a more
-              personalized and satisfying experience for your customers.
-            </div>
-          </div>
-        </div>
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-              className="accordion-button collapsed"
-              data-bs-toggle="collapse"
-              data-bs-target="#faq-business-ai-3"
-            >
-              Is BusinessAI suitable for small businesses?
-            </button>
-          </h2>
-          <div
-            id="faq-business-ai-3"
-            className="accordion-collapse collapse"
-            data-bs-parent="#faq-business-ai"
-          >
-            <div className="accordion-body">
-              Absolutely! BusinessAI offers scalable solutions that
-              can be tailored to fit the needs of small businesses. It assists
-              in automating routine tasks, managing data, and optimizing
-              workflows, providing valuable support for small business growth.
-            </div>
-          </div>
-        </div>
-        <div className="accordion-item">
-          <h2 className="accordion-header">
-            <button
-              className="accordion-button collapsed"
-              data-bs-toggle="collapse"
-              data-bs-target="#faq-business-ai-4"
-            >
-              How can BusinessAI impact decision-making?
-            </button>
-          </h2>
-          <div
-            id="faq-business-ai-4"
-            className="accordion-collapse collapse"
-            data-bs-parent="#faq-business-ai"
-          >
-            <div className="accordion-body">
-              BusinessAI provides data-driven insights and
-              predictions, empowering informed decision-making. It analyzes
-              trends, identifies opportunities, and helps businesses make
-              strategic choices based on accurate and timely information.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+              <div className="section-content">
+                <div className="row g-gs justify-content-center">
+                  <div className="col-xl-9 col-xxl-8">
+                    <div
+                      className="accordion accordion-separated accordion-plus-minus"
+                      id="faq-business-ai"
+                    >
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button
+                            className={`accordion-button ${
+                              activeIndex === 0 ? "show !important" : ""
+                            }`}
+                            onClick={() => handleAccordionClick(0)}
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq-business-ai-1"
+                          >
+                            How can BusinessAI assist my business?
+                          </button>
+                        </h2>
+                        <div
+                          id="faq-business-ai-1"
+                          className={`accordion-collapse ${
+                            activeIndex === 0 ? "show !important" : "collapse"
+                          }`}
+                          data-bs-parent="#faq-business-ai"
+                        >
+                          <div className="accordion-body">
+                            BusinessAI can help optimize your business
+                            processes, analyze data, and provide insights for
+                            better decision-making. Whether it's automating
+                            tasks or predicting trends, BusinessAI enhances
+                            efficiency and performance.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button
+                            className="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq-business-ai-2"
+                          >
+                            Can BusinessAI improve customer engagement?
+                          </button>
+                        </h2>
+                        <div
+                          id="faq-business-ai-2"
+                          className="accordion-collapse collapse"
+                          data-bs-parent="#faq-business-ai"
+                        >
+                          <div className="accordion-body">
+                            Yes, BusinessAI can enhance customer engagement by
+                            personalizing interactions, analyzing customer
+                            behavior, and providing tailored recommendations. It
+                            helps create a more personalized and satisfying
+                            experience for your customers.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button
+                            className="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq-business-ai-3"
+                          >
+                            Is BusinessAI suitable for small businesses?
+                          </button>
+                        </h2>
+                        <div
+                          id="faq-business-ai-3"
+                          className="accordion-collapse collapse"
+                          data-bs-parent="#faq-business-ai"
+                        >
+                          <div className="accordion-body">
+                            Absolutely! BusinessAI offers scalable solutions
+                            that can be tailored to fit the needs of small
+                            businesses. It assists in automating routine tasks,
+                            managing data, and optimizing workflows, providing
+                            valuable support for small business growth.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button
+                            className="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faq-business-ai-4"
+                          >
+                            How can BusinessAI impact decision-making?
+                          </button>
+                        </h2>
+                        <div
+                          id="faq-business-ai-4"
+                          className="accordion-collapse collapse"
+                          data-bs-parent="#faq-business-ai"
+                        >
+                          <div className="accordion-body">
+                            BusinessAI provides data-driven insights and
+                            predictions, empowering informed decision-making. It
+                            analyzes trends, identifies opportunities, and helps
+                            businesses make strategic choices based on accurate
+                            and timely information.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </main>
@@ -1146,16 +1194,14 @@ export default function LandingPage() {
                     <div className="col-xl-5 col-lg-6">
                       <div className="block-text">
                         <h6 className="overline-title text-primary">
-                        Boost Your Business Smarts with AI Assistance
+                          Boost Your Business Smarts with AI Assistance
                         </h6>
                         <h2 className="title">Business Wisdom, Simplified.</h2>
                         <p>
-                        Let our AI-powered Business App simplify complexities, empowering you with smart solutions for your business success. Streamline your journey to growth effortlessly.
-
-
-
-
-
+                          Let our AI-powered Business App simplify complexities,
+                          empowering you with smart solutions for your business
+                          success. Streamline your journey to growth
+                          effortlessly.
                         </p>
                         <ul className="list list-row gx-3 gy-0">
                           <li>
@@ -1170,7 +1216,7 @@ export default function LandingPage() {
                         <ul className="btn-list btn-list-inline gy-0">
                           <li>
                             <Link
-                              href={isSignedIn ?"/dashboard" : "/sign-up"}
+                              href={isSignedIn ? "/dashboard" : "/sign-up"}
                               className="btn btn-lg btn-primary rounded-pill"
                             >
                               <span>Get started for free</span>
@@ -1208,7 +1254,7 @@ export default function LandingPage() {
                 <div className="row">
                   <div className="col-md">
                     <p className="mb-md-0 mb-2">
-                      &copy; 2023 Copyright. 
+                      &copy; 2023 Copyright.
                       <Link href="#" className="fw-bold text-white">
                         Business AI
                       </Link>
@@ -1270,4 +1316,5 @@ export default function LandingPage() {
       <Script src="/static/js/scripts6572.js" />
     </div>
   );
-}
+};
+export default LandingPage;
