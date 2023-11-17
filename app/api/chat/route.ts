@@ -1,12 +1,7 @@
 import { kv } from "@vercel/kv";
 import { Ratelimit } from "@upstash/ratelimit";
 import { OpenAI } from "openai";
-import {
-  OpenAIStream,
-  StreamingTextResponse,
-} from "ai";
-// import { functions, runFunction } from "./functions";
- import { CreateChatCompletionRequestMessage } from "openai/resources/chat";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 // Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
@@ -44,30 +39,20 @@ export async function POST(req: Request) {
   }
 
   const { messages } = await req.json();
-const instructionMessage: CreateChatCompletionRequestMessage = {
-    role:"system",
-    content:"You are a Business advicer/assistant. You must answer questions in relation to Business. You give business related advices , everything business related, When a question that is not business related is asked you shift the conversation back to your purpose. when asked what your name is you respond with i am known as the number 1 business AI"
-}
+  const instructionMessage = {
+    role: "system",
+    content:
+      "You are a Business advicer/assistant. You must answer questions in relation to Business. You give business related advices , everything business related, When a question that is not business related is asked you shift the conversation back to your purpose. when asked what your name is you respond with i am known as the number 1 business AI",
+  };
   // check if the conversation requires a function call to be made
   const initialResponse = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-0613",
     messages: [instructionMessage, ...messages],
     stream: true,
-    
   });
-
-  const stream = OpenAIStream(initialResponse, {
-    experimental_onFunctionCall: async (
-      { name, arguments: args },
-      createFunctionCallMessages,
-    ) => {
-      return openai.chat.completions.create({
-        model: "gpt-3.5-turbo-0613",
-        stream: true,
-        messages: [instructionMessage, ...messages],
-      });
-    },
-  });
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const stream = OpenAIStream(initialResponse);
 
   return new StreamingTextResponse(stream);
 }
